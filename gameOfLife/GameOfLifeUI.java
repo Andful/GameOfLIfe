@@ -15,21 +15,14 @@ public class GameOfLifeUI extends JPanel {
      * 
      */
     private static final long serialVersionUID = 1L;
-    private boolean[][] grid;
     private int squaresize;
+    private GameOfLife gol;
     
     public GameOfLifeUI(int numbrows, int numbcols, int squaresize) {
-        
         // init grid
-        grid = new boolean[numbcols][numbrows];
-        for (int i=0; i<numbcols; i++)
-            for (int j=0; j<numbrows; j++)
-                grid[i][j] = false;
+    	gol = new GameOfLife(numbrows, numbcols);
         // choose some initial configuration
         // multiple inits might interfere with the shape behavior
-        initGlider();
-        initSmallExploder();
-        initTumbler();
         
         this.squaresize = squaresize;
         setPreferredSize(new Dimension(numbcols*squaresize,numbrows*squaresize));
@@ -48,16 +41,16 @@ public class GameOfLifeUI extends JPanel {
     protected void toggleGridValue(int x, int y) {
         int i = x/squaresize;
         int j = y/squaresize;
-        grid[i][j] = !grid[i][j];
+        gol.changeState(i, j);
         repaint();
     }
 
     public void tick() {
-        this.advance();
+        gol.advance();
         this.repaint();
     }
 
-    private void advance() {
+    /*private void advance() {
         boolean[][] newgrid = new boolean[grid.length][grid[0].length];
         
         for (int i=0; i<grid.length; i++)
@@ -76,50 +69,7 @@ public class GameOfLifeUI extends JPanel {
                     newgrid[i][j] = true;
         
         grid = newgrid;
-    }
-
-    private void initSmallExploder() {
-        grid[30][31] = true;
-        grid[30][32] = true;
-        grid[31][30] = true;
-        grid[31][31] = true;
-        grid[31][33] = true;
-        grid[32][31] = true;
-        grid[32][32] = true;
-    }
-
-    private void initGlider() {
-        grid[21][20] = true;
-        grid[22][21] = true;
-        grid[22][22] = true;
-        grid[21][22] = true;
-        grid[20][22] = true;
-    }
-    
-    private void initTumbler() {
-        grid[30][23] = true;
-        grid[30][24] = true;
-        grid[30][25] = true;
-        grid[31][20] = true;
-        grid[31][21] = true;
-        grid[31][25] = true;
-        grid[32][20] = true;
-        grid[32][21] = true;
-        grid[32][22] = true;
-        grid[32][23] = true;
-        grid[32][24] = true;
-        grid[34][20] = true;
-        grid[34][21] = true;
-        grid[34][22] = true;
-        grid[34][23] = true;
-        grid[34][24] = true;
-        grid[35][20] = true;
-        grid[35][21] = true;
-        grid[35][25] = true;
-        grid[36][23] = true;
-        grid[36][24] = true;
-        grid[36][25] = true;
-    }
+    }*/
     
     public void paintComponent(Graphics g) {
         Graphics2D g2 = (Graphics2D)g;
@@ -129,9 +79,9 @@ public class GameOfLifeUI extends JPanel {
         
         //draw alive cells
         g2.setColor(Color.YELLOW);
-        for (int i=0; i<grid.length; i++)
-            for (int j=0; j<grid[0].length; j++) 
-                if (grid[i][j]) 
+        for (int i=0; i<gol.grid.length; i++)
+            for (int j=0; j<gol.grid[0].length; j++) 
+                if (gol.grid[i][j].getState()) 
                     g2.fill(new Rectangle2D.Double(i*squaresize+1,j*squaresize+1,squaresize-1,squaresize-1));
     }
 
@@ -141,10 +91,10 @@ public class GameOfLifeUI extends JPanel {
         g2.fill(getVisibleRect());
         //drawgrid
         g2.setColor(Color.GRAY);
-        for (int i=0;i<=grid.length;i++)
-            g2.drawLine(i*squaresize, 0, i*squaresize,grid[0].length*squaresize);
-        for (int i=0;i<=grid[0].length;i++)
-            g2.drawLine(0,i*squaresize,grid.length*squaresize,i*squaresize);
+        for (int i=0;i<=gol.grid.length;i++)
+            g2.drawLine(i*squaresize, 0, i*squaresize,gol.grid[0].length*squaresize);
+        for (int i=0;i<=gol.grid[0].length;i++)
+            g2.drawLine(0,i*squaresize,gol.grid.length*squaresize,i*squaresize);
     }
         
 }

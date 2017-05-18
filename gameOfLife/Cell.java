@@ -10,6 +10,7 @@ public class Cell {
     
     public Cell(Cell[][] grid) {
         this.grid = grid;
+        this.state = new DeadState();
     }
     
     public void tick() {
@@ -32,7 +33,7 @@ public class Cell {
         return result;
     }
     
-    private boolean getState(){
+    public boolean getState(){
         return state.isAlive();
     }
 }
