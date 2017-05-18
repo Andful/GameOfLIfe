@@ -2,20 +2,13 @@ package gameOfLife;
 
 public class GameOfLife {
     public Cell[][] grid;
-    public boolean pause = true;
-    public void togglePause() {
-        if(pause) {
-            pause = false;
-            advance();
-        }else {
-            pause = true;
-        }
-    }
-    public GameOfLife(int numbrows, int numbcols) {
+    private GameOfLifeUI panel;
+    public GameOfLife(int numbrows, int numbcols, GameOfLifeUI panel) {
         grid = new Cell[numbcols][numbrows];
+        this.panel = panel;
         for (int i=0; i<numbcols; i++)
             for (int j=0; j<numbrows; j++)
-                grid[i][j] = new Cell(grid);
+                grid[i][j] = new Cell(grid, i, j);
         initGlider();
         initSmallExploder();
         initTumbler();
@@ -32,6 +25,7 @@ public class GameOfLife {
     			grid[i][j].tick();
     		}
     	}
+    	panel.repaint();
     }
     
     private void initSmallExploder() {

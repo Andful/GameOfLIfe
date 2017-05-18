@@ -11,16 +11,12 @@ import javax.swing.JPanel;
 
 public class GameOfLifeUI extends JPanel {
 
-    /**
-     * 
-     */
-    private static final long serialVersionUID = 1L;
     private int squaresize;
     private GameOfLife gol;
     
     public GameOfLifeUI(int numbrows, int numbcols, int squaresize) {
         // init grid
-    	gol = new GameOfLife(numbrows, numbcols);
+    	gol = new GameOfLife(numbrows, numbcols, this);
         // choose some initial configuration
         // multiple inits might interfere with the shape behavior
         
@@ -49,27 +45,6 @@ public class GameOfLifeUI extends JPanel {
         gol.advance();
         this.repaint();
     }
-
-    /*private void advance() {
-        boolean[][] newgrid = new boolean[grid.length][grid[0].length];
-        
-        for (int i=0; i<grid.length; i++)
-            for (int j=0; j<grid[0].length; j++)
-                newgrid[i][j] = false;
-        
-        for (int i=0; i<grid.length; i++)
-            for (int j=0; j<grid[0].length; j++) 
-                if ((grid[i][j]) && (nbrOfNeighbors(i,j) < 2))
-                    newgrid[i][j] = false;
-                else if ((grid[i][j]) && (2 <= nbrOfNeighbors(i,j)) && (nbrOfNeighbors(i,j) <= 3))
-                    newgrid[i][j] = true;
-                else if ((grid[i][j]) && (3 < nbrOfNeighbors(i,j)))
-                    newgrid[i][j] = false;
-                else if ((!grid[i][j]) && (nbrOfNeighbors(i,j) == 3))
-                    newgrid[i][j] = true;
-        
-        grid = newgrid;
-    }*/
     
     public void paintComponent(Graphics g) {
         Graphics2D g2 = (Graphics2D)g;
@@ -78,7 +53,7 @@ public class GameOfLifeUI extends JPanel {
         drawgrid(g2);
         
         //draw alive cells
-        g2.setColor(Color.YELLOW);
+        g2.setColor(Color.GREEN);
         for (int i=0; i<gol.grid.length; i++)
             for (int j=0; j<gol.grid[0].length; j++) 
                 if (gol.grid[i][j].getState()) 

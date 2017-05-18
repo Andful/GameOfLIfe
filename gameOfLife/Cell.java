@@ -8,8 +8,10 @@ public class Cell {
     public CellState state;
     public CellState nextState;
     
-    public Cell(Cell[][] grid) {
+    public Cell(Cell[][] grid, int i, int j) {
         this.grid = grid;
+        this.x = i;
+        this.y = j;
         this.state = new DeadState();
     }
     

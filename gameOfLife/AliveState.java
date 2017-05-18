@@ -1,8 +1,9 @@
 package gameOfLife;
 
 public class AliveState extends CellState {
+	private boolean stateType = true;
     public boolean isAlive(){
-        return true;
+        return stateType;
     }
     public CellState nextState(int neighbors) {
                 if (neighbors < 2)
